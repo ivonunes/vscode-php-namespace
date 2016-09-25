@@ -1,0 +1,41 @@
+{
+    "name": "php-namespace",
+    "displayName": "PHP Namespace",
+    "description": "This extension resolves the namespace for the selected PHP class.",
+    "version": "0.0.1",
+    "publisher": "ivonunes",
+    "author": "Ivo Nunes",
+    "homepage": "https://github.com/ivonunes/vscode-php-namespace",
+    "engines": {
+        "vscode": "^1.5.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "license": "GPL-3.0",
+    "repository": {
+        "type": "GitHub",
+        "url": "https://github.com/ivonunes/vscode-php-namespace.git"
+    },
+    "activationEvents": [
+        "onCommand:extension.resolveNamespace"
+    ],
+    "main": "./out/src/extension",
+    "contributes": {
+        "commands": [
+            {
+                "command": "extension.resolveNamespace",
+                "title": "Resolve PHP Namespace"
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
+        "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install"
+    },
+    "devDependencies": {
+        "typescript": "^1.8.5",
+        "vscode": "^0.11.0"
+    }
+}
