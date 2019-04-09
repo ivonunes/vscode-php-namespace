@@ -40,7 +40,7 @@ function resolveNamespace() {
     let editor = vscode.window.activeTextEditor;
     let document = editor.document;
     let selections = editor.selections;
-
+    
     for (let selection of selections) {
         if (selection.isEmpty) {
             vscode.window.showErrorMessage('Please select a class name.');
@@ -49,6 +49,7 @@ function resolveNamespace() {
             let searchExts = '**/*.php';
             let excludedFiles = '**/node_modules/**';
             let namespaces = [];
+            var regex = /namespace\s+([^;]+);/g;
             
             vscode.workspace.findFiles(searchExts, excludedFiles).then(files => {
                 if (files) {
@@ -56,19 +57,18 @@ function resolveNamespace() {
                         let fileName = file.fsPath
                             .replace(/^.*[\\\/]/, '')
                             .split('.')[0];
-
-                        if (fileName == selectedClass) {
+  
+                        if (fileName.toLowerCase() == selectedClass.toLowerCase()) {
+                            
                             vscode.workspace.openTextDocument(file).then(doc => {
                                 for (let line = 0; line < doc.lineCount; line++) {
                                     let textLine = doc.lineAt(line).text;
+                                    var res = regex.exec(textLine);
 
-                                    if (textLine.startsWith('namespace ') || textLine.startsWith('<?php namespace ')) {
-                                        let namespace = textLine
-                                            .split('namespace ')[1]
-                                            .split(';')[0]
-                                            + '\\'
-                                            + selectedClass;
+                                    if (res) {
 
+                                        var namespace = res[1] + '\\' + fileName;
+             
                                         if (namespaces.indexOf(namespace) == -1) {
                                             namespaces.push(namespace);
                                             insertNamespace(editor, namespace);
